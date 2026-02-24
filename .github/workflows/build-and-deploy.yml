@@ -21,21 +21,18 @@ jobs:
       - name: Test
         run: go test -v ./...
 
-  deploy:
-    runs-on: ubuntu-latest
+      - name: Upload build folder via SCP
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.DESTINATION_HOST }}
+          SSH_USER: ${{ secrets.SSH_USERNAME }}
+          SSH_PORT: ${{ secrets.DESTINATION_SSH_PORT }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+          ssh-keyscan -p ${SSH_PORT:-22} $SSH_HOST >> ~/.ssh/known_hosts
 
-      - name: Copy to Remote Server
-        uses: pierrickdelrieu/scp-action@v0.1.0
-        with:
-          host: ${{ secrets.DESTINATION_HOST }}
-          ssh_port: ${{ secrets.DESTINATION_SSH_PORT }}
-          ssh_username: ${{ secrets.SSH_USERNAME }}
-          ssh_key: ${{ secrets.SSH_KEY }}
-          ssh_passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source_dir: "./build"
-          destination_dir: "~/build"
-          rm: true
+          scp -P ${SSH_PORT:-22} -r ./build \
+            $SSH_USER@$SSH_HOST:~/build
