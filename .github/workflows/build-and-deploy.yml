@@ -36,17 +36,17 @@ jobs:
         working-directory: internal/frontend
 
       - name: Build Go Backend
-        run: go build -v -o ./build/invoice-gen ./cmd/main.go
+        run: go build -v -o ./artifacts/invoice-gen ./cmd/main.go
 
       - name: Test Go Backend
         run: go test -v ./...
 
       - name: Move frontend dist
         run: |
-          mkdir -p ./build/internal/frontend/dist
-          mv ./internal/frontend/dist ./build/internal/frontend/dist
+          mkdir -p ./artifacts/internal/frontend/dist
+          mv ./internal/frontend/dist ./artifacts/internal/frontend/dist
 
-      - name: Upload build folder via SCP
+      - name: Upload artifacts via SCP
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
           SSH_HOST: ${{ secrets.DESTINATION_HOST }}
@@ -59,5 +59,5 @@ jobs:
 
           ssh-keyscan -p ${SSH_PORT:-22} $SSH_HOST >> ~/.ssh/known_hosts
 
-          scp -P ${SSH_PORT:-22} -r ./build \
-            $SSH_USER@$SSH_HOST:~/build
+          scp -P ${SSH_PORT:-22} -r ./artifacts \
+            $SSH_USER@$SSH_HOST:~/artifacts
