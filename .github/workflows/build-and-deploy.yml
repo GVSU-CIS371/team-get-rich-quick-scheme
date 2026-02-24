@@ -44,7 +44,7 @@ jobs:
       - name: Move frontend dist
         run: |
           mkdir -p ./artifacts/internal/frontend/dist
-          mv ./internal/frontend/dist ./artifacts/internal/frontend/dist
+          mv ./internal/frontend/dist/* ./artifacts/internal/frontend/dist
 
       - name: Upload artifacts via SCP
         env:
