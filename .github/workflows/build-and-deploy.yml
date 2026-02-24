@@ -16,7 +16,7 @@ jobs:
           go-version: '1.26'
 
       - name: Build
-        run: go build -o invoice-gen ./cmd/main.go
+        run: go build -v -o invoice-gen ./cmd/main.go
 
       - name: Test
         run: go test -v ./...
