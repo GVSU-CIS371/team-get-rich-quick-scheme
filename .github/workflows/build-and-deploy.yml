@@ -44,7 +44,7 @@ jobs:
       - name: Move frontend dist
         run: |
           mkdir -p ./build/internal/frontend/dist
-          mv -r ./internal/frontend/dist ./build/internal/frontend/dist
+          mv ./internal/frontend/dist ./build/internal/frontend/dist
 
       - name: Upload build folder via SCP
         env:
