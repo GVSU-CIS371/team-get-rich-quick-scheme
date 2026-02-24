@@ -1,6 +1,7 @@
 package server
 
 import (
+	"invoicegen/internal/database"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -8,12 +9,18 @@ import (
 )
 
 type Config struct {
-	Host string
-	Dev  bool
+	Host     string
+	Database string
+	Dev      bool
 }
 
 func Run(config *Config) error {
-	r, err := setupRoutes(config)
+	db, err := database.Connect(config.Database)
+	if err != nil {
+		return err
+	}
+
+	r, err := setupRoutes(config, db)
 	if err != nil {
 		return err
 	}
@@ -21,7 +28,7 @@ func Run(config *Config) error {
 	return http.ListenAndServe(config.Host, r)
 }
 
-func setupRoutes(config *Config) (*chi.Mux, error) {
+func setupRoutes(config *Config, db *database.Database) (*chi.Mux, error) {
 	r := chi.NewRouter()
 
 	// Setup dev middleware
