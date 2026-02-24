@@ -15,11 +15,36 @@ jobs:
         with:
           go-version: '1.26'
 
-      - name: Build
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+          run_install: false
+
+      - name: Install Frontend Dependencies
+        run: pnpm install
+        working-directory: internal/frontend
+
+      - name: Build Frontend
+        run: pnpm build
+        working-directory: internal/frontend
+
+      - name: Build Go Backend
         run: go build -v -o ./build/invoice-gen ./cmd/main.go
 
-      - name: Test
+      - name: Test Go Backend
         run: go test -v ./...
+
+      - name: Move frontend dist
+        run: |
+          mkdir -p ./build/internal/frontend/dist
+          mv -r ./internal/frontend/dist ./build/internal/frontend/dist
 
       - name: Upload build folder via SCP
         env:
