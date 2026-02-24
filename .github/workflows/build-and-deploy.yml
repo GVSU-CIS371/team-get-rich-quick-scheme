@@ -1,0 +1,63 @@
+name: build-and-deploy.yml
+on:
+  push:
+    branches: [ "*", "main", "dev" ]
+  pull_request:
+    branches: [ "*", "main", "dev" ]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.26'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: "10.30.1"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          cache-dependency-path: 'internal/frontend/pnpm-lock.yaml'
+
+      - name: Install Frontend Dependencies
+        run: pnpm install
+        working-directory: internal/frontend
+
+      - name: Build Frontend
+        run: pnpm build
+        working-directory: internal/frontend
+
+      - name: Build Go Backend
+        run: go build -v -o ./artifacts/invoice-gen ./cmd/main.go
+
+      - name: Test Go Backend
+        run: go test -v ./...
+
+      - name: Move frontend dist
+        run: |
+          mkdir -p ./artifacts/internal/frontend/dist
+          mv ./internal/frontend/dist/* ./artifacts/internal/frontend/dist
+
+      - name: Upload artifacts via SCP
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.DESTINATION_HOST }}
+          SSH_USER: ${{ secrets.SSH_USERNAME }}
+          SSH_PORT: ${{ secrets.DESTINATION_SSH_PORT }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+
+          ssh-keyscan -p ${SSH_PORT:-22} $SSH_HOST >> ~/.ssh/known_hosts
+
+          scp -P ${SSH_PORT:-22} -r ./artifacts \
+            $SSH_USER@$SSH_HOST:~/artifacts-new
