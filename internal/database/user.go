@@ -12,7 +12,7 @@ type User struct {
 	FirstName string
 	LastName  string
 	Email     string `gorm:"uniqueIndex"`
-	Password  string
+	Password  string `json:"-"`
 }
 
 func (db *Database) CreateUser(firstName, lastName, email, password string) (*User, error) {
