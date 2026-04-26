@@ -8,15 +8,17 @@ import {Login} from "./pages/Login";
 
 export function App() {
 	return (
-		<LocationProvider>
-			<main>
-				<Router>
-					<Route path="/" component={Home} />
-					<Route path="/login" component={Login} />
-					<Route default component={NotFound} />
-				</Router>
-			</main>
-		</LocationProvider>
+		<div className="dark bg-background min-h-screen">
+			<LocationProvider>
+				<main>
+					<Router>
+						<Route path="/" component={Home} />
+						<Route path="/login" component={Login} />
+						<Route default component={NotFound} />
+					</Router>
+				</main>
+			</LocationProvider>
+		</div>
 	);
 }
 
