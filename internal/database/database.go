@@ -13,7 +13,9 @@ type Database struct {
 }
 
 func Connect(uri string) (*Database, error) {
-	db, err := gorm.Open(sqlite.Open(uri), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(uri), &gorm.Config{
+		TranslateError: true,
+	})
 	if err != nil {
 		return nil, err
 	}

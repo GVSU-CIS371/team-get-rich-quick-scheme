@@ -2,6 +2,7 @@ package server
 
 import (
 	"invoicegen/internal/database"
+	"invoicegen/internal/server/routes"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -41,6 +42,8 @@ func setupRoutes(config *Config, db *database.Database) (*chi.Mux, error) {
 	r.Use(db.Middleware())
 
 	apiRouter := chi.NewRouter()
+	apiRouter.Post("/login", routes.PostLogin())
+	apiRouter.Post("/register", routes.PostRegister())
 
 	r.Mount("/api/v1", apiRouter)
 	setupFrontend(r, config.Dev)
