@@ -38,6 +38,7 @@ func setupRoutes(config *Config, db *database.Database) (*chi.Mux, error) {
 
 	r.Use(middleware.RequestID)
 	r.Use(middleware.Recoverer)
+	r.Use(db.Middleware())
 
 	apiRouter := chi.NewRouter()
 
