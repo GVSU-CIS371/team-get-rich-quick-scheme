@@ -2,6 +2,7 @@ package server
 
 import (
 	"invoicegen/internal/database"
+	"invoicegen/internal/security/auth"
 	"invoicegen/internal/server/routes"
 	"net/http"
 
@@ -42,8 +43,18 @@ func setupRoutes(config *Config, db *database.Database) (*chi.Mux, error) {
 	r.Use(db.Middleware())
 
 	apiRouter := chi.NewRouter()
+	apiRouter.Use(auth.UserMiddleware())
 	apiRouter.Post("/login", routes.PostLogin())
 	apiRouter.Post("/register", routes.PostRegister())
+
+	apiRouter.Group(func(r chi.Router) {
+		r.Use(auth.ForceUserMiddleware())
+
+		apiRouter.Get("/test", func(w http.ResponseWriter, r *http.Request) {
+			user := r.Context().Value("user").(*database.User)
+			_, _ = w.Write([]byte(user.FirstName + " " + user.LastName))
+		})
+	})
 
 	r.Mount("/api/v1", apiRouter)
 	setupFrontend(r, config.Dev)
