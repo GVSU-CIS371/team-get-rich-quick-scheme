@@ -7,6 +7,7 @@ import './style.css';
 import {Login} from "@/pages/Login";
 import {Register} from "./pages/Register";
 import {AuthProvider} from "@/components/auth/Auth";
+import {DashboardHomePage} from "@/pages/Dashboard";
 
 export function App() {
 	return (
@@ -18,6 +19,7 @@ export function App() {
 							<Route path="/" component={Home} />
 							<Route path="/login" component={Login} />
 							<Route path="/register" component={Register} />
+							<Route path="/dashboard" component={DashboardHomePage} />
 							<Route default component={NotFound} />
 						</Router>
 					</main>
