@@ -43,12 +43,11 @@ func setupRoutes(config *Config, db *database.Database) (*chi.Mux, error) {
 	r.Use(db.Middleware())
 
 	apiRouter := chi.NewRouter()
-	apiRouter.Use(auth.UserMiddleware())
 	apiRouter.Post("/login", routes.PostLogin())
 	apiRouter.Post("/register", routes.PostRegister())
 
 	apiRouter.Group(func(r chi.Router) {
-		r.Use(auth.ForceUserMiddleware())
+		r.Use(auth.UserMiddleware())
 
 		apiRouter.Get("/test", func(w http.ResponseWriter, r *http.Request) {
 			user := r.Context().Value("user").(*database.User)

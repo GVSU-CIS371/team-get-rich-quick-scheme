@@ -54,10 +54,8 @@ func PostRegister() http.HandlerFunc {
 		}
 
 		response.SendSuccessResponse(w, response.Flex{
-			"session": response.Flex{
-				"secret":     session.Secret,
-				"expiration": session.Expiration.UnixMilli(),
-			},
+			"session":    session.Secret,
+			"expiration": session.Expiration.UnixMilli(),
 		})
 	}
 }

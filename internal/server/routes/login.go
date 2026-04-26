@@ -16,7 +16,7 @@ type loginData struct {
 var loginSchema = zog.Struct(zog.Shape{
 	"email": zog.String().Required(zog.Message("Email is required")).Email(zog.Message("Email is invalid")),
 	"password": zog.String().Required(zog.Message("Password is required")).Min(11,
-		zog.Message("Invalid Email or Password")).Max(128, zog.Message("Invalid Email or Password")),
+		zog.Message("Password is too short")).Max(128, zog.Message("Password is too long")),
 })
 
 func PostLogin() http.HandlerFunc {

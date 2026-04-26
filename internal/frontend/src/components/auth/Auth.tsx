@@ -16,7 +16,7 @@ interface AuthContextType {
     authClient: AxiosInstance;
     setAuthClient: Dispatch<StateUpdater<AxiosInstance>>;
     isLoggedIn: () => boolean;
-    saveToken: (token: string, expiration: number, apiOnly: boolean) => void;
+    saveToken: (token: string, expiration: number) => void;
     removeToken: () => void;
 }
 

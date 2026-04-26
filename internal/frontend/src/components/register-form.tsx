@@ -17,10 +17,10 @@ import {JSONFormInput} from "@/components/form/JSONFormInput";
 import {useAuth} from "@/components/auth/Auth";
 import {useState} from "preact/hooks";
 import {useLocation} from "preact-iso";
-import {AlertCircleIcon} from "lucide-react";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+import {AlertCircleIcon} from "lucide-react";
 
-export function LoginForm({
+export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
@@ -48,13 +48,13 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
+          <CardTitle>Register for an account</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Register now to join our platform
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <JSONForm method="POST" action="/api/v1/login" onFail={onError} onSuccess={onSuccess}>
+          <JSONForm method="POST" action="/api/v1/register" onFail={onError} onSuccess={onSuccess}>
             {errorVisible && <Alert variant="destructive" className="my-3">
               <AlertCircleIcon />
               <AlertTitle>Error</AlertTitle>
@@ -62,7 +62,20 @@ export function LoginForm({
                 {error}
               </AlertDescription>
             </Alert>}
+
             <FieldGroup>
+              <JSONFormInput
+                  type="text"
+                  name="firstName"
+                  label="First Name"
+                  required
+              />
+              <JSONFormInput
+                  type="text"
+                  name="lastName"
+                  label="Last Name"
+                  required
+              />
               <JSONFormInput
                   type="email"
                   name="email"
@@ -76,9 +89,9 @@ export function LoginForm({
                   required
               />
               <Field>
-                <Button type="submit">Login</Button>
+                <Button type="submit">Register</Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="/register">Sign up</a>
+                  Already have an account? <a href="/login">Login</a>
                 </FieldDescription>
               </Field>
             </FieldGroup>

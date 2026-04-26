@@ -27,17 +27,3 @@ func UserMiddleware() func(http.Handler) http.Handler {
 		})
 	}
 }
-
-func ForceUserMiddleware() func(http.Handler) http.Handler {
-	return func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			user := r.Context().Value("user").(*database.User)
-			if user == nil {
-				w.WriteHeader(http.StatusUnauthorized)
-				return
-			}
-
-			next.ServeHTTP(w, r)
-		})
-	}
-}
