@@ -14,9 +14,15 @@ func main() {
 
 	dev := os.Getenv("ENV") == "dev"
 
+	dbUri := os.Getenv("DB_URI")
+	if dbUri == "" {
+		dbUri = "invoicegen.db"
+	}
+
 	err := server.Run(&server.Config{
-		Host: host,
-		Dev:  dev,
+		Host:     host,
+		Dev:      dev,
+		Database: dbUri,
 	})
 
 	if err != nil {
