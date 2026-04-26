@@ -1,7 +1,12 @@
+import {useLocation} from "preact-iso";
+
 export function Home() {
+	const location = useLocation();
+	location.route("/login");
+
 	return (
 		<div class="home">
-			<p>Coming Soon!</p>
+			<p>Redirecting...</p>
 		</div>
 	);
 }
