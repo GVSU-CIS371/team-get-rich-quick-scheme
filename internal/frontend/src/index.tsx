@@ -4,7 +4,8 @@ import { LocationProvider, Router, Route } from 'preact-iso';
 import { Home } from './pages/Home';
 import { NotFound } from './pages/_404.jsx';
 import './style.css';
-import {Login} from "./pages/Login";
+import {Login} from "@/pages/Login";
+import {Register} from "@/pages/register";
 
 export function App() {
 	return (
@@ -14,6 +15,7 @@ export function App() {
 					<Router>
 						<Route path="/" component={Home} />
 						<Route path="/login" component={Login} />
+						<Route path="/register" component={Register} />
 						<Route default component={NotFound} />
 					</Router>
 				</main>
