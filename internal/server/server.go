@@ -57,6 +57,7 @@ func setupRoutes(config *Config, db *database.Database) (*chi.Mux, error) {
 		r.Get("/organizations/{orgID}/invoices", routes.GetInvoices())
 		r.Post("/organizations/{orgID}/invoices", routes.PostInvoices())
 		r.Post("/organizations/{orgID}/invoices/{invID}/items", routes.PostInvoiceItem())
+		r.Delete("/organizations/{orgID}/invoices/{invID}/items/{itemID}", routes.DeleteInvoiceItem())
 		r.Get("/organizations/{orgID}/invoices/{invID}", routes.GetInvoice())
 	})
 

@@ -69,3 +69,7 @@ func (db *Database) GetInvoiceCount() int64 {
 	db.client.Model(&Invoice{}).Count(&count)
 	return count
 }
+
+func (db *Database) DeleteInvoiceItem(invoice *Invoice, id uint) {
+	db.client.Where("id = ? AND invoice_id = ?", id, invoice.ID).Delete(&InvoiceItem{})
+}

@@ -108,6 +108,50 @@ func PostInvoiceItem() http.HandlerFunc {
 	}
 }
 
+func DeleteInvoiceItem() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		user := r.Context().Value("user").(*database.User)
+		db := r.Context().Value("db").(*database.Database)
+
+		orgIdStr := chi.URLParam(r, "orgID")
+		invIdStr := chi.URLParam(r, "invID")
+		invItemIdStr := chi.URLParam(r, "itemID")
+
+		orgId, err := strconv.Atoi(orgIdStr)
+		if err != nil {
+			response.SendErrorResponse(w, nil, []string{"invoice item not found"}, http.StatusNotFound)
+			return
+		}
+
+		invId, err := strconv.Atoi(invIdStr)
+		if err != nil {
+			response.SendErrorResponse(w, nil, []string{"invoice item not found"}, http.StatusNotFound)
+			return
+		}
+
+		invItemId, err := strconv.Atoi(invItemIdStr)
+		if err != nil {
+			response.SendErrorResponse(w, nil, []string{"invoice item not found"}, http.StatusNotFound)
+			return
+		}
+
+		org, err := db.GetOrganization(user, uint(orgId))
+		if org == nil || err != nil {
+			response.SendErrorResponse(w, nil, []string{"invoice item not found"}, http.StatusNotFound)
+			return
+		}
+
+		invoice, err := db.GetInvoice(org, uint(invId))
+		if invoice == nil || err != nil {
+			response.SendErrorResponse(w, nil, []string{"invoice item not found"}, http.StatusNotFound)
+			return
+		}
+
+		db.DeleteInvoiceItem(invoice, uint(invItemId))
+		response.SendSuccessResponse(w, nil)
+	}
+}
+
 func GetInvoices() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		user := r.Context().Value("user").(*database.User)
