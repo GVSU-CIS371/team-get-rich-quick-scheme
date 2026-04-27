@@ -1,6 +1,9 @@
 package server
 
 import (
+	"invoicegen/internal/database"
+	"invoicegen/internal/security/auth"
+	"invoicegen/internal/server/routes"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -8,12 +11,18 @@ import (
 )
 
 type Config struct {
-	Host string
-	Dev  bool
+	Host     string
+	Database string
+	Dev      bool
 }
 
 func Run(config *Config) error {
-	r, err := setupRoutes(config)
+	db, err := database.Connect(config.Database)
+	if err != nil {
+		return err
+	}
+
+	r, err := setupRoutes(config, db)
 	if err != nil {
 		return err
 	}
@@ -21,7 +30,7 @@ func Run(config *Config) error {
 	return http.ListenAndServe(config.Host, r)
 }
 
-func setupRoutes(config *Config) (*chi.Mux, error) {
+func setupRoutes(config *Config, db *database.Database) (*chi.Mux, error) {
 	r := chi.NewRouter()
 
 	// Setup dev middleware
@@ -31,8 +40,20 @@ func setupRoutes(config *Config) (*chi.Mux, error) {
 
 	r.Use(middleware.RequestID)
 	r.Use(middleware.Recoverer)
+	r.Use(db.Middleware())
 
 	apiRouter := chi.NewRouter()
+	apiRouter.Post("/login", routes.PostLogin())
+	apiRouter.Post("/register", routes.PostRegister())
+
+	apiRouter.Group(func(r chi.Router) {
+		r.Use(auth.UserMiddleware())
+
+		apiRouter.Get("/test", func(w http.ResponseWriter, r *http.Request) {
+			user := r.Context().Value("user").(*database.User)
+			_, _ = w.Write([]byte(user.FirstName + " " + user.LastName))
+		})
+	})
 
 	r.Mount("/api/v1", apiRouter)
 	setupFrontend(r, config.Dev)
