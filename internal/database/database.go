@@ -51,6 +51,16 @@ func migrate(db *gorm.DB) error {
 		return err
 	}
 
+	err = db.AutoMigrate(&Invoice{})
+	if err != nil {
+		return err
+	}
+
+	err = db.AutoMigrate(&InvoiceItem{})
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

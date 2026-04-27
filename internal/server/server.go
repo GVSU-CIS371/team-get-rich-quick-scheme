@@ -45,14 +45,20 @@ func setupRoutes(config *Config, db *database.Database) (*chi.Mux, error) {
 	apiRouter := chi.NewRouter()
 	apiRouter.Post("/login", routes.PostLogin())
 	apiRouter.Post("/register", routes.PostRegister())
+	apiRouter.Get("/stats", routes.GetStats())
 
 	apiRouter.Group(func(r chi.Router) {
 		r.Use(auth.UserMiddleware())
 
-		apiRouter.Get("/test", func(w http.ResponseWriter, r *http.Request) {
-			user := r.Context().Value("user").(*database.User)
-			_, _ = w.Write([]byte(user.FirstName + " " + user.LastName))
-		})
+		r.Get("/user", routes.GetUser())
+		r.Get("/organizations", routes.GetOrganizations())
+		r.Post("/organizations", routes.PostOrganizations())
+		r.Get("/organizations/{orgID}", routes.GetOrganization())
+		r.Get("/organizations/{orgID}/invoices", routes.GetInvoices())
+		r.Post("/organizations/{orgID}/invoices", routes.PostInvoices())
+		r.Post("/organizations/{orgID}/invoices/{invID}/items", routes.PostInvoiceItem())
+		r.Delete("/organizations/{orgID}/invoices/{invID}/items/{itemID}", routes.DeleteInvoiceItem())
+		r.Get("/organizations/{orgID}/invoices/{invID}", routes.GetInvoice())
 	})
 
 	r.Mount("/api/v1", apiRouter)

@@ -12,7 +12,7 @@ type User struct {
 	FirstName string
 	LastName  string
 	Email     string `gorm:"uniqueIndex"`
-	Password  string
+	Password  string `json:"-"`
 }
 
 func (db *Database) CreateUser(firstName, lastName, email, password string) (*User, error) {
@@ -48,6 +48,12 @@ func (db *Database) GetUserByEmail(email string) *User {
 	}
 
 	return user
+}
+
+func (db *Database) GetUserCount() int64 {
+	var count int64
+	db.client.Model(&User{}).Count(&count)
+	return count
 }
 
 func (user *User) ValidatePassword(password string) bool {
