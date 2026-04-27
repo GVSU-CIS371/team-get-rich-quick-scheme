@@ -50,6 +50,12 @@ func setupRoutes(config *Config, db *database.Database) (*chi.Mux, error) {
 		r.Use(auth.UserMiddleware())
 
 		r.Get("/user", routes.GetUser())
+		r.Get("/organizations", routes.GetOrganizations())
+		r.Post("/organizations", routes.PostOrganizations())
+		r.Get("/organizations/{orgID}/invoices", routes.GetInvoices())
+		r.Post("/organizations/{orgID}/invoices", routes.PostInvoices())
+		r.Post("/organizations/{orgID}/invoices/{invID}/items", routes.PostInvoiceItem())
+		r.Get("/organizations/{orgID}/invoices/{invID}", routes.GetInvoice())
 	})
 
 	r.Mount("/api/v1", apiRouter)
