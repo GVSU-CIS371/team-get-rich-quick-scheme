@@ -75,6 +75,9 @@ export function ViewOrganizationPage() {
 
                 <Button className="mt-4" onClick={() =>
                     location.route(`/dashboard/organizations/${org.ID}/invoices/add`)}>Create Invoice</Button>
+
+                <Button className="mt-4" onClick={() =>
+                    location.route(`/dashboard`)}>Go Back</Button>
             </div>
         </DashboardLayout>
     )
