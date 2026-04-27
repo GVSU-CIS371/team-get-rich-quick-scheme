@@ -9,6 +9,7 @@ import {RegisterPage} from "./pages/Register";
 import {AuthProvider} from "@/components/auth/Auth";
 import {DashboardHomePage} from "@/pages/Dashboard";
 import {LogoutPage} from "@/pages/Logout";
+import {AddOrganizationPage} from "@/pages/Dashboard/organizations/add";
 
 export function App() {
 	return (
@@ -22,6 +23,7 @@ export function App() {
 							<Route path="/register" component={RegisterPage} />
 							<Route path="/logout" component={LogoutPage} />
 							<Route path="/dashboard" component={DashboardHomePage} />
+							<Route path="/dashboard/organizations/add" component={AddOrganizationPage} />
 							<Route default component={NotFound} />
 						</Router>
 					</main>
