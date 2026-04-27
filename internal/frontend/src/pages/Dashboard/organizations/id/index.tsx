@@ -54,6 +54,7 @@ export function ViewOrganizationPage() {
                                 <TableRow>
                                     <TableHead>Date</TableHead>
                                     <TableHead>Note</TableHead>
+                                    <TableHead>Actions</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
