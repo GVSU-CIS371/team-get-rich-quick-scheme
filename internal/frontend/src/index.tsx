@@ -14,6 +14,7 @@ import {ViewOrganizationPage} from "@/pages/Dashboard/organizations/id";
 import {AddInvoicePage} from "@/pages/Dashboard/organizations/invoices/add";
 import {ViewInvoicePage} from "@/pages/Dashboard/organizations/invoices/id";
 import {AddInvoiceItemPage} from "@/pages/Dashboard/organizations/invoices/id/item/add";
+import {SettingsPage} from "@/pages/Dashboard/settings";
 
 export function App() {
 	return (
@@ -27,6 +28,7 @@ export function App() {
 							<Route path="/register" component={RegisterPage} />
 							<Route path="/logout" component={LogoutPage} />
 							<Route path="/dashboard" component={DashboardHomePage} />
+							<Route path="/dashboard/settings" component={SettingsPage} />
 							<Route path="/dashboard/organizations/add" component={AddOrganizationPage} />
 							<Route path="/dashboard/organizations/:id" component={ViewOrganizationPage} />
 							<Route path="/dashboard/organizations/:id/invoices/add" component={AddInvoicePage} />

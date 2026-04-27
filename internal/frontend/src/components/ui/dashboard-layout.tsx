@@ -17,6 +17,10 @@ const links: Link[] = [
         Url: "/dashboard/organizations/add"
     },
     {
+        Name: "Settings",
+        Url: "/dashboard/settings"
+    },
+    {
         Name: "Logout",
         Url: "/logout"
     }

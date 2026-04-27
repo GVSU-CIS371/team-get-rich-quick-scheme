@@ -60,3 +60,13 @@ func (user *User) ValidatePassword(password string) bool {
 	valid, err := crypto.VerifyPassword(password, user.Password)
 	return err == nil && valid
 }
+
+func (db *Database) UpdatePassword(user *User, password string) error {
+	hash, err := crypto.HashPassword(password)
+	if err != nil {
+		return err
+	}
+
+	db.client.Model(user).Update("password", hash)
+	return nil
+}
