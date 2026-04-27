@@ -29,7 +29,11 @@ export function JSONForm({children, method, action, onSuccess, onFail, onIssues,
         data.forEach((value, key) => object[key] = value);
         const json = JSON.stringify(object);
 
-        const res = await authClient.post(action, JSON.parse(json));
+        const res = await authClient.request({
+            url: action,
+            method: method,
+            data: JSON.parse(json)
+        });
 
         if (res.status === 200) {
             onSuccess?.(res.data.data);
