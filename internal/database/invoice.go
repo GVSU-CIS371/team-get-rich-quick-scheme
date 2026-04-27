@@ -63,3 +63,9 @@ func (db *Database) CreateInvoiceItem(invoice *Invoice, description string, quan
 	db.client.Create(item)
 	return item
 }
+
+func (db *Database) GetInvoiceCount() int64 {
+	var count int64
+	db.client.Model(&Invoice{}).Count(&count)
+	return count
+}

@@ -50,6 +50,12 @@ func (db *Database) GetUserByEmail(email string) *User {
 	return user
 }
 
+func (db *Database) GetUserCount() int64 {
+	var count int64
+	db.client.Model(&User{}).Count(&count)
+	return count
+}
+
 func (user *User) ValidatePassword(password string) bool {
 	valid, err := crypto.VerifyPassword(password, user.Password)
 	return err == nil && valid
