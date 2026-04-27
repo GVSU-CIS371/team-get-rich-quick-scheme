@@ -1,13 +1,14 @@
 import { render } from 'preact';
 import { LocationProvider, Router, Route } from 'preact-iso';
 
-import { Home } from './pages/Home';
+import { HomePage } from './pages/Home';
 import { NotFound } from './pages/_404.jsx';
 import './style.css';
-import {Login} from "@/pages/Login";
-import {Register} from "./pages/Register";
+import {LoginPage} from "@/pages/Login";
+import {RegisterPage} from "./pages/Register";
 import {AuthProvider} from "@/components/auth/Auth";
 import {DashboardHomePage} from "@/pages/Dashboard";
+import {LogoutPage} from "@/pages/Logout";
 
 export function App() {
 	return (
@@ -16,9 +17,10 @@ export function App() {
 				<LocationProvider>
 					<main>
 						<Router>
-							<Route path="/" component={Home} />
-							<Route path="/login" component={Login} />
-							<Route path="/register" component={Register} />
+							<Route path="/" component={HomePage} />
+							<Route path="/login" component={LoginPage} />
+							<Route path="/register" component={RegisterPage} />
+							<Route path="/logout" component={LogoutPage} />
 							<Route path="/dashboard" component={DashboardHomePage} />
 							<Route default component={NotFound} />
 						</Router>

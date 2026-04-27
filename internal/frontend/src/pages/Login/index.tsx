@@ -1,6 +1,6 @@
-import {LoginForm} from "@/components/login-form";
+import {LoginForm} from "@/components/ui/login-form";
 
-export function Login() {
+export function LoginPage() {
     return (
         <div class="absolute w-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <div className="flex w-full justify-center">

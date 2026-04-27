@@ -4,7 +4,7 @@ import {useAuth} from "@/components/auth/Auth";
 import {useState} from "preact/hooks";
 import {useLocation} from "preact-iso";
 
-export function Home() {
+export function HomePage() {
 	const {authClient} = useAuth();
 	const [activeUsers, setActiveUsers] = useState(0);
 	const [invoiceCount, setInvoiceCount] = useState(0);
