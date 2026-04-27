@@ -51,6 +51,7 @@ func setupRoutes(config *Config, db *database.Database) (*chi.Mux, error) {
 		r.Use(auth.UserMiddleware())
 
 		r.Get("/user", routes.GetUser())
+		r.Put("/user/password", routes.PutPassword())
 		r.Get("/organizations", routes.GetOrganizations())
 		r.Post("/organizations", routes.PostOrganizations())
 		r.Get("/organizations/{orgID}", routes.GetOrganization())
