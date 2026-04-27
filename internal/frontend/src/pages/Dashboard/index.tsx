@@ -1,6 +1,6 @@
 import {DashboardLayout} from "@/components/ui/dashboard-layout";
 import {useAuth} from "@/components/auth/Auth";
-import {useState} from "preact/hooks";
+import {useEffect, useState} from "preact/hooks";
 import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {Button} from "@/components/ui/button";
 import {useLocation} from "preact-iso";
@@ -10,9 +10,11 @@ export function DashboardHomePage() {
     const [organizations, setOrganizations] = useState([]);
     const location = useLocation();
 
-    authClient.get('/api/v1/organizations').then(r => {
-       setOrganizations(r.data.data.organizations);
-    });
+    useEffect(() => {
+        authClient.get('/api/v1/organizations').then(r => {
+            setOrganizations(r.data.data.organizations);
+        });
+    }, []);
 
     return (
         <DashboardLayout>
