@@ -19,7 +19,7 @@ func prodSetup(r *chi.Mux) {
 		}
 
 		var data []byte
-		target, err := getTargetFile("./internal/server/frontend/dist", r.URL.Path)
+		target, err := getTargetFile("./internal/frontend/dist", r.URL.Path)
 		if err == nil {
 			data, err = io.ReadAll(target)
 			if err != nil {
